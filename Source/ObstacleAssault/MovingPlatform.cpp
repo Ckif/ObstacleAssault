@@ -16,6 +16,8 @@ void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 
+	StartLocation = GetActorLocation();
+
 }
 
 // Called every frame
@@ -26,7 +28,15 @@ void AMovingPlatform::Tick(float DeltaTime)
 	FVector CurrentLocation = GetActorLocation();
 	CurrentLocation += PlatformVelocity*DeltaTime;
 	SetActorLocation(CurrentLocation);
+	const float Distance = FVector::Dist(StartLocation, CurrentLocation);
 
-	//Git Test
+	if(Distance > MoveDistance)
+	{
+		const FVector MoveDirection = PlatformVelocity.GetSafeNormal();
+		StartLocation = StartLocation + MoveDirection*MoveDistance;
+		SetActorLocation(StartLocation);
+		PlatformVelocity  = -PlatformVelocity;
+	}
+	
 }
 
