@@ -18,12 +18,14 @@ void AMovingPlatform::BeginPlay()
 
 	StartLocation = GetActorLocation();
 
+
 }
 
 // Called every frame
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 
 	FVector CurrentLocation = GetActorLocation();
 	CurrentLocation += PlatformVelocity*DeltaTime;
@@ -32,11 +34,12 @@ void AMovingPlatform::Tick(float DeltaTime)
 
 	if(Distance > MoveDistance)
 	{
+	const float Overshoot = Distance - MoveDistance;
 		const FVector MoveDirection = PlatformVelocity.GetSafeNormal();
 		StartLocation = StartLocation + MoveDirection*MoveDistance;
 		SetActorLocation(StartLocation);
 		PlatformVelocity  = -PlatformVelocity;
+	UE_LOG(LogTemp, Display, TEXT("Overshoot of %s: X = %f"), *this->GetName(), Overshoot);
 	}
-	
 }
 
