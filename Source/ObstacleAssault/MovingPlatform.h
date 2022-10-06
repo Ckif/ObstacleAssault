@@ -26,17 +26,19 @@ public:
 
 private:
 	
-	UPROPERTY(EditAnywhere, Category = "Moving Platform")
+	UPROPERTY(EditAnywhere, Category = "Moving")
 	FVector PlatformVelocity = FVector(300, 0, 0);
 	
-	UPROPERTY(EditAnywhere, Category = "Moving Platform")
-	float MoveDistance = 100;
+	UPROPERTY(EditAnywhere, Category = "Moving")
+	float MoveDistance = 100.f;
+
+	UPROPERTY(EditAnywhere, Category = "Rotation")
+	FRotator RotationVelocity;
 
 	FVector StartLocation;
 
 	void MovePlatform(float DeltaTime);
-
-	void RotatePlatform() const;
+	void RotatePlatform(float DeltaTime);
 	bool ShouldPlatformReturn() const;
 	float GetDistanceMoved() const;
 };
