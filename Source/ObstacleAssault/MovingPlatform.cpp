@@ -6,9 +6,8 @@
 // Sets default values
 AMovingPlatform::AMovingPlatform()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -18,28 +17,28 @@ void AMovingPlatform::BeginPlay()
 
 	StartLocation = GetActorLocation();
 
+	const FString Name = GetName();
 
+	UE_LOG(LogTemp, Display, TEXT("BeginPlay: - %s"), *Name)
 }
 
 // Called every frame
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-
+	
 	FVector CurrentLocation = GetActorLocation();
-	CurrentLocation += PlatformVelocity*DeltaTime;
+	CurrentLocation += PlatformVelocity * DeltaTime;
 	SetActorLocation(CurrentLocation);
 	const float Distance = FVector::Dist(StartLocation, CurrentLocation);
 
-	if(Distance > MoveDistance)
+	if (Distance > MoveDistance)
 	{
-	const float Overshoot = Distance - MoveDistance;
+		const float Overshoot = Distance - MoveDistance;
 		const FVector MoveDirection = PlatformVelocity.GetSafeNormal();
-		StartLocation = StartLocation + MoveDirection*MoveDistance;
+		StartLocation = StartLocation + MoveDirection * MoveDistance;
 		SetActorLocation(StartLocation);
-		PlatformVelocity  = -PlatformVelocity;
-	UE_LOG(LogTemp, Display, TEXT("Overshoot of %s: X = %f"), *this->GetName(), Overshoot);
+		PlatformVelocity = -PlatformVelocity;
+		UE_LOG(LogTemp, Display, TEXT("Overshoot of %s: X = %f"), *this->GetName(), Overshoot);
 	}
 }
-
